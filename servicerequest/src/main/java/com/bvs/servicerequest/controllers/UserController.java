@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bvs.servicerequest.entities.GetProfileRequest;
-import com.bvs.servicerequest.entities.GetProfileResponse;
+import com.bvs.servicerequest.dto.GetProfileRequest;
+import com.bvs.servicerequest.dto.GetProfileResponse;
 import com.bvs.servicerequest.entities.User;
 import com.bvs.servicerequest.repos.UserRepository;
 
@@ -19,11 +19,6 @@ public class UserController {
 	UserRepository userRepository;
 
 	GetProfileResponse response = new GetProfileResponse();
-
-	@RequestMapping("/showRegister")
-	public String showRegistrationPage() {
-		return "login/registerUser";
-	}
 
 	@RequestMapping("/registerUser")
 	public Boolean register(@RequestBody User user) {

@@ -1,4 +1,4 @@
-package com.bvs.servicerequest.entities;
+package com.bvs.servicerequest.dto;
 
 public class GetProfileRequest {
 
