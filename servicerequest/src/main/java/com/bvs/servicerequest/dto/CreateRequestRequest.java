@@ -6,7 +6,7 @@ public class CreateRequestRequest {
 	private String service_type;
 	private String product_invoice_number;
 	private String detailed_complaint;
-	private Long user_id;
+	private String email;
 
 	public String getProduct_model() {
 		return product_model;
@@ -40,12 +40,12 @@ public class CreateRequestRequest {
 		this.detailed_complaint = detailed_complaint;
 	}
 
-	public Long getUser_id() {
-		return user_id;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
