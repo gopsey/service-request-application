@@ -1,6 +1,11 @@
 package com.bvs.servicerequest.entities;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class User extends AbstractEntity {
@@ -11,6 +16,9 @@ public class User extends AbstractEntity {
 	private String password;
 	private String company_name;
 	private String phone;
+	@ManyToMany
+	@JoinTable(name="user_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
+	private Set<Role> roles;
 
 	public String getFirst_name() {
 		return first_name;
@@ -58,6 +66,14 @@ public class User extends AbstractEntity {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

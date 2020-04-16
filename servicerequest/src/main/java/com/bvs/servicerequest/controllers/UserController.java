@@ -1,6 +1,13 @@
 package com.bvs.servicerequest.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bvs.servicerequest.dto.GetProfileRequest;
 import com.bvs.servicerequest.dto.GetProfileResponse;
+import com.bvs.servicerequest.entities.Role;
 import com.bvs.servicerequest.entities.User;
 import com.bvs.servicerequest.repos.UserRepository;
+import com.bvs.servicerequest.services.SecurityService;
+import com.bvs.servicerequest.services.SecurityServiceImpl;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -17,12 +27,22 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	SecurityService securityService;
+	
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
 	GetProfileResponse response = new GetProfileResponse();
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
 	@RequestMapping("/registerUser")
 	public Boolean register(@RequestBody User user) {
 		Boolean isRegisterSuccess = false;
+//		Password Encoding
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		try {
 			userRepository.save(user);
 			isRegisterSuccess = true;
@@ -33,19 +53,42 @@ public class UserController {
 		return isRegisterSuccess;
 	}
 
-	@RequestMapping("/getProfile")
-	public GetProfileResponse login(@RequestBody GetProfileRequest request) {
+	@RequestMapping("/userLogin")
+	public boolean login(@RequestBody GetProfileRequest request) {
 		String requestEmail = request.getEmail().toString();
 		String requestPassword = request.getPassword().toString();
-		User user = userRepository.findByEmail(requestEmail);
-		if (user != null && user.getPassword().equals(requestPassword)) {
-			response.setFirst_name(user.getFirst_name().toString());
-			response.setLast_name(user.getLast_name().toString());
-			response.setEmail(user.getEmail().toString());
-			response.setCompany_name(user.getCompany_name().toString());
-			response.setPhone(user.getPhone().toString());
-			return response;
+		boolean loginResponse = securityService.login(requestEmail, requestPassword);
+		if (loginResponse) {
+			return loginResponse;
 		} else {
+			return false;
+		}
+	}
+
+	@RequestMapping("/getProfile")
+	public GetProfileResponse getProfile(@RequestBody String userEmail) {
+		String requestEmail = userEmail;
+		try {
+			User user = userRepository.findByEmail(requestEmail);
+			if (user != null) {
+				response.setFirst_name(user.getFirst_name().toString());
+				response.setLast_name(user.getLast_name().toString());
+				response.setEmail(user.getEmail().toString());
+				response.setCompany_name(user.getCompany_name().toString());
+				response.setPhone(user.getPhone().toString());
+				Set<Role> userRoles = user.getRoles();
+				List<String> list = new ArrayList<>();
+				for (Role s : userRoles) {
+					list.add(s.getName().toString());
+				}
+				response.setRoles(list);
+				return response;
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			return null;
 		}
 	}

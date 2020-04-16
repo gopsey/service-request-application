@@ -12,13 +12,13 @@ import com.bvs.servicerequest.services.CreateRequestService;
 @RestController
 @CrossOrigin(origins = "*")
 public class CreateRequestController {
-	
+
 	@Autowired
 	CreateRequestService createRequestService;
 
 	@RequestMapping("/createRequest")
 	public Boolean createRequest(@RequestBody CreateRequestRequest request) {
-		
+
 		createRequestService.createRequest(request);
 		return null;
 	}

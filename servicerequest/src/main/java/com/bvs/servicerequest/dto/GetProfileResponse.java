@@ -1,5 +1,9 @@
 package com.bvs.servicerequest.dto;
 
+import java.util.List;
+
+import com.bvs.servicerequest.entities.Role;
+
 public class GetProfileResponse {
 
 	private String first_name;
@@ -7,6 +11,7 @@ public class GetProfileResponse {
 	private String email;
 	private String company_name;
 	private String phone;
+	private List<String> roles;
 
 	public String getFirst_name() {
 		return first_name;
@@ -46,6 +51,14 @@ public class GetProfileResponse {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 
 }
