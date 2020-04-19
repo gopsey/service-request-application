@@ -14,10 +14,10 @@ public class User extends AbstractEntity {
 	private String last_name;
 	private String email;
 	private String password;
-	private String company_name;
+	private Long company_id;
 	private String phone;
 	@ManyToMany
-	@JoinTable(name="user_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns = @JoinColumn(name="role_id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
 	public String getFirst_name() {
@@ -52,12 +52,12 @@ public class User extends AbstractEntity {
 		this.password = password;
 	}
 
-	public String getCompany_name() {
-		return company_name;
+	public Long getCompany_id() {
+		return company_id;
 	}
 
-	public void setCompany_name(String company_name) {
-		this.company_name = company_name;
+	public void setCompany_id(Long company_id) {
+		this.company_id = company_id;
 	}
 
 	public String getPhone() {

@@ -18,8 +18,6 @@ public class CreateRequestController {
 
 	@RequestMapping("/createRequest")
 	public Boolean createRequest(@RequestBody CreateRequestRequest request) {
-
-		createRequestService.createRequest(request);
-		return null;
+		return createRequestService.createRequest(request);
 	}
 }

@@ -2,8 +2,6 @@ package com.bvs.servicerequest.dto;
 
 import java.util.List;
 
-import com.bvs.servicerequest.entities.Role;
-
 public class GetProfileResponse {
 
 	private String first_name;

@@ -2,6 +2,7 @@ package com.bvs.servicerequest.entities;
 
 import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -14,8 +15,11 @@ public class CreateRequest extends AbstractEntity {
 	private String product_invoice_number;
 	private String detailed_complaint;
 	private char current_status;
-	private Long user_id;
 	private Timestamp created_time;
+	@Column(name = "user_id")
+	private Long userId;
+	@Column(name = "company_id")
+	private Long companyId;
 
 	public String getProduct_model() {
 		return product_model;
@@ -49,20 +53,12 @@ public class CreateRequest extends AbstractEntity {
 		this.detailed_complaint = detailed_complaint;
 	}
 
-	public int getCurrent_status() {
+	public char getCurrent_status() {
 		return current_status;
 	}
 
 	public void setCurrent_status(char current_status) {
 		this.current_status = current_status;
-	}
-
-	public Long getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(Long user_id) {
-		this.user_id = user_id;
 	}
 
 	public Timestamp getCreated_time() {
@@ -71,6 +67,22 @@ public class CreateRequest extends AbstractEntity {
 
 	public void setCreated_time(Timestamp created_time) {
 		this.created_time = created_time;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
 
 }

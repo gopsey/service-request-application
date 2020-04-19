@@ -15,8 +15,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/userLogin", "/registerUser", "/getProfile", "/createRequest")
-				.permitAll()
+		http.authorizeRequests().antMatchers("/", "/userLogin", "/registerUser", "/getProfile", "/createRequest",
+				"/getCompanyTicketsList").permitAll()
 //		Below line to authorize certain urls to particular roles
 				.antMatchers("/home").hasAnyAuthority("ROLE_USER", "ROLE_TECHNICIAN").anyRequest().authenticated().and()
 				.csrf().disable();

@@ -22,7 +22,7 @@ public class CreateRequestServiceImpl implements CreateRequestService {
 	UserRepository userRepository;
 
 	@Override
-	public CreateRequest createRequest(CreateRequestRequest request) {
+	public Boolean createRequest(CreateRequestRequest request) {
 		CreateRequest createdRequestResponse = new CreateRequest();
 		CreateRequest createRequest = new CreateRequest();
 		Date date = new Date();
@@ -32,7 +32,8 @@ public class CreateRequestServiceImpl implements CreateRequestService {
 		createRequest.setService_type(request.getService_type());
 		createRequest.setProduct_invoice_number(request.getProduct_invoice_number());
 		createRequest.setDetailed_complaint(request.getDetailed_complaint());
-		createRequest.setUser_id(currentUser.getId());
+		createRequest.setUserId(currentUser.getId());
+		createRequest.setCompanyId(currentUser.getCompany_id());
 		/*
 		 * Setting current status as always "o" for open temporarily. To be changed once
 		 * Technician module is implemented
@@ -40,7 +41,11 @@ public class CreateRequestServiceImpl implements CreateRequestService {
 		createRequest.setCurrent_status('o');
 		createRequest.setCreated_time(timestamp);
 		createdRequestResponse = requestRepository.save(createRequest);
-		return createdRequestResponse;
+		if (createdRequestResponse != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
