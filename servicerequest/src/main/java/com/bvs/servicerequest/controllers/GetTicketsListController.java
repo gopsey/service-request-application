@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bvs.servicerequest.dto.GetTicketsListResponse;
 import com.bvs.servicerequest.entities.Company;
 import com.bvs.servicerequest.entities.CreateRequest;
+import com.bvs.servicerequest.entities.User;
 import com.bvs.servicerequest.repos.CompanyRepository;
 import com.bvs.servicerequest.repos.CreateRequestRepository;
+import com.bvs.servicerequest.repos.UserRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,11 +26,15 @@ public class GetTicketsListController {
 
 	@Autowired
 	CompanyRepository companyRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	@RequestMapping("/getCompanyTicketsList")
-	public List<GetTicketsListResponse> getCompanyTicketsList(@RequestBody Long company_id) {
+	public List<GetTicketsListResponse> getCompanyTicketsList(@RequestBody Long userId) {
 		try {
-			List<CreateRequest> listOfCompanyRequests = createRequestRepository.findByCompanyId(company_id);
+			User currentUser = userRepository.findById(userId).get();
+			List<CreateRequest> listOfCompanyRequests = createRequestRepository.findByCompanyId(currentUser.getCompany_id());
 			List<GetTicketsListResponse> newList = new ArrayList<>();
 			GetTicketsListResponse response = new GetTicketsListResponse();
 			for (CreateRequest createRequest : listOfCompanyRequests) {

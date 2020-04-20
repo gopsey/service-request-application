@@ -79,7 +79,7 @@ public class UserController {
 				Long userCompanyId = user.getCompany_id();
 				Company companyDetails = companyRepository.findById(userCompanyId).get();
 				response.setCompany_name(companyDetails.getName().toString());
-
+				response.setId(user.getId());
 				Set<Role> userRoles = user.getRoles();
 				List<String> list = new ArrayList<>();
 				for (Role eachRole : userRoles) {

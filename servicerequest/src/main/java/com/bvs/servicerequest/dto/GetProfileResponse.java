@@ -4,12 +4,21 @@ import java.util.List;
 
 public class GetProfileResponse {
 
+	private Long id;
 	private String first_name;
 	private String last_name;
 	private String email;
 	private String company_name;
 	private String phone;
 	private List<String> roles;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getFirst_name() {
 		return first_name;
