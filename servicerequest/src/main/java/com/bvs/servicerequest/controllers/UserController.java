@@ -89,6 +89,7 @@ public class UserController {
 				}
 			});
 		}
+
 		user.setRoles(roles);
 		user.setCompany_id(signUpRequest.getCompany_id());
 		user.setFirst_name(signUpRequest.getFirst_name());
