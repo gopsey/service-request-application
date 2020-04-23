@@ -19,6 +19,14 @@ public class User extends AbstractEntity {
 	@ManyToMany
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	public User() {
+	}
+
+	public User(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
 
 	public String getFirst_name() {
 		return first_name;
