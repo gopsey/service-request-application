@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.bvs.servicerequest.dto.CreateRequestRequest;
@@ -21,6 +22,13 @@ public class CreateRequestServiceImpl implements CreateRequestService {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	EmailUtil emailUtil;
+
+	/*
+	 * @param request has product_model, service_type, product_invoice_number,
+	 * detailed_complaint, email. Saves data in request table in DB
+	 */
 	@Override
 	public Boolean createRequest(CreateRequestRequest request) {
 		CreateRequest createdRequestResponse = new CreateRequest();
@@ -41,6 +49,13 @@ public class CreateRequestServiceImpl implements CreateRequestService {
 		createRequest.setCurrent_status('o');
 		createRequest.setCreated_time(timestamp);
 		createdRequestResponse = requestRepository.save(createRequest);
+//		Sending email with requested ticket details
+		try {
+			emailUtil.sendEmail(request, createdRequestResponse);
+		} catch (MailException e) {
+			e.printStackTrace();
+		}
+
 		if (createdRequestResponse != null) {
 			return true;
 		} else {

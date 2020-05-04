@@ -64,41 +64,43 @@ public class UserController {
 
 	GetProfileResponse response = new GetProfileResponse();
 
+	/*
+	 * @param signupRequest will have first_name, last_name, email, phone,
+	 * companyCode, password. role will be null always and will be ROLE_USER by
+	 * default
+	 */
 	@RequestMapping("/registerUser")
 	public Boolean register(@RequestBody RegisterRequest signUpRequest) {
-		User user = new User(signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
-		Set<String> strRoles = signUpRequest.getRole();
-		Set<Role> roles = new HashSet<>();
-		if (strRoles == null) {
-			Role userRole = roleRepository.findByName("ROLE_USER")
-					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-			roles.add(userRole);
+		// Verifying company code
+		Company companyCodeExists = isCompanyCodeValid(signUpRequest.getCompanyCode());
+		if (companyCodeExists != null) {
+			// Setting email and encoded encrypted password to the user object
+			User user = new User(signUpRequest.getEmail(), encoder.encode(signUpRequest.getPassword()));
+			Set<String> strRoles = signUpRequest.getRole();
+			Set<Role> roles = new HashSet<>();
+			if (strRoles == null) {
+				Role userRole = roleRepository.findByName("ROLE_USER")
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+				roles.add(userRole);
+			}
+
+			user.setRoles(roles);
+			user.setCompany_id(companyCodeExists.getId());
+			user.setFirst_name(signUpRequest.getFirst_name());
+			user.setLast_name(signUpRequest.getLast_name());
+			user.setPhone(signUpRequest.getPhone());
+			userRepository.save(user);
+			return true;
 		} else {
-			strRoles.forEach(role -> {
-				switch (role) {
-				case "technician":
-					Role adminRole = roleRepository.findByName("ROLE_TECHNICIAN")
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(adminRole);
-
-					break;
-				default:
-					Role userRole = roleRepository.findByName("ROLE_USER")
-							.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-					roles.add(userRole);
-				}
-			});
+			return false;
 		}
-
-		user.setRoles(roles);
-		user.setCompany_id(signUpRequest.getCompany_id());
-		user.setFirst_name(signUpRequest.getFirst_name());
-		user.setLast_name(signUpRequest.getLast_name());
-		user.setPhone(signUpRequest.getPhone());
-		userRepository.save(user);
-		return true;
 	}
 
+	/*
+	 * @param request will have email and raw password. jwt token is generated and
+	 * no idea how to use it. request goes through spring security for
+	 * authentication.
+	 */
 	@RequestMapping("/userLogin")
 	public ResponseEntity<?> login(@RequestBody GetProfileRequest request) {
 
@@ -115,6 +117,9 @@ public class UserController {
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles));
 	}
 
+	/*
+	 * @param userEmail has email and is passed to get user details
+	 */
 //	@PreAuthorize("hasRole('USER') or hasRole('TECHNICIAN')")
 	@RequestMapping("/getProfile")
 	public GetProfileResponse getProfile(@RequestBody String userEmail) {
@@ -146,4 +151,18 @@ public class UserController {
 			return null;
 		}
 	}
+
+	/*
+	 * @param companyCode has company code as string and passed to verify if code
+	 * exists in DB.
+	 */
+	public Company isCompanyCodeValid(String companyCode) {
+		Company companyByCode = companyRepository.findByCode(companyCode);
+		if (companyCode.trim().toUpperCase().equals(companyByCode.getCode())) {
+			return companyByCode;
+		} else {
+			return null;
+		}
+	}
+
 }

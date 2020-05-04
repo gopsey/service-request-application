@@ -1,7 +1,5 @@
 package com.bvs.servicerequest.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,17 +17,16 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SecurityServiceImpl.class);
-
+	/*
+	 * @param username is used to fetch user data
+	 * 
+	 * @param password is checked against the encrypted password from data in DB
+	 */
 	@Override
 	public boolean login(String username, String password) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password,
 				userDetails.getAuthorities());
-		LOGGER.info("Encrypted password: " + password);
-		LOGGER.info("Actual password in DB: " + userDetails.getPassword());
-		org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
-		LOGGER.info("Is password match? " + encoder.matches(password, userDetails.getPassword()));
 		authenticationManager.authenticate(token);
 		boolean isAuthenticated = token.isAuthenticated();
 		if (isAuthenticated) {

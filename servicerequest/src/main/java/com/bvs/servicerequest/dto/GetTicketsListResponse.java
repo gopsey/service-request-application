@@ -8,7 +8,7 @@ public class GetTicketsListResponse {
 	private String product_invoice_number;
 	private String detailed_complaint;
 	private char current_status;
-	private Timestamp created_time;
+	private String created_time;
 	private String companyName;
 
 	public String getProduct_model() {
@@ -51,11 +51,11 @@ public class GetTicketsListResponse {
 		this.current_status = current_status;
 	}
 
-	public Timestamp getCreated_time() {
+	public String getCreated_time() {
 		return created_time;
 	}
 
-	public void setCreated_time(Timestamp created_time) {
+	public void setCreated_time(String created_time) {
 		this.created_time = created_time;
 	}
 

@@ -10,7 +10,7 @@ public class RegisterRequest extends AbstractEntity {
 	private String last_name;
 	private String email;
 	private String password;
-	private Long company_id;
+	private String companyCode;
 	private String phone;
 	private Set<String> role;
 
@@ -46,12 +46,12 @@ public class RegisterRequest extends AbstractEntity {
 		this.password = password;
 	}
 
-	public Long getCompany_id() {
-		return company_id;
+	public String getCompanyCode() {
+		return companyCode;
 	}
 
-	public void setCompany_id(Long company_id) {
-		this.company_id = company_id;
+	public void setCompanyCode(String companyCode) {
+		this.companyCode = companyCode;
 	}
 
 	public String getPhone() {

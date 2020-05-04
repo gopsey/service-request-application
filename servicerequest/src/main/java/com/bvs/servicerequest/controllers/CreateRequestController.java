@@ -16,6 +16,10 @@ public class CreateRequestController {
 	@Autowired
 	CreateRequestService createRequestService;
 
+	/*
+	 * @param request has product_model, service_type, product_invoice_number,
+	 * detailed_complaint, email. Calls createRequest() from CreateRequestService
+	 */
 	@RequestMapping("/createRequest")
 	public Boolean createRequest(@RequestBody CreateRequestRequest request) {
 		return createRequestService.createRequest(request);

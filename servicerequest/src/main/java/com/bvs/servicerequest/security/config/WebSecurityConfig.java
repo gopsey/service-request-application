@@ -53,11 +53,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/", "/userLogin", "/registerUser", "/getProfile", "/createRequest",
+				.antMatchers("/", "/home", "/userLogin", "/registerUser", "/getProfile", "/createRequest",
 						"/getCompanyTicketsList")
 				.permitAll()
 //		Below line to authorize certain urls to particular roles
-				.antMatchers("/home").hasAnyAuthority("ROLE_USER", "ROLE_TECHNICIAN").anyRequest().authenticated();
+				.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
