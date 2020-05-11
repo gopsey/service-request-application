@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/", "/home", "/userLogin", "/registerUser", "/getProfile", "/createRequest",
-						"/getCompanyTicketsList")
+						"/getCompanyTicketsList", "/getIndividualTicket")
 				.permitAll()
 //		Below line to authorize certain urls to particular roles
 				.anyRequest().authenticated();

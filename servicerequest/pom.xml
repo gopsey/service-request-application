@@ -12,6 +12,7 @@
 	<groupId>com.bvs.servicerequest</groupId>
 	<artifactId>servicerequest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>servicerequest</name>
 	<description>Service Request Application</description>
 
